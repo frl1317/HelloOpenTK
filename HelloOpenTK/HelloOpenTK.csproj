@@ -79,8 +79,12 @@
     <None Include="App.config" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
-    <None Include="shader.frag" />
-    <None Include="shader.vert" />
+    <None Include="Shader\shaderTexture.frag" />
+    <None Include="Shader\shader.frag" />
+    <None Include="Shader\shader.vert" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy $(ProjectDir)Shader\* $(TargetDir) /Y</PreBuildEvent>
+  </PropertyGroup>
 </Project>
