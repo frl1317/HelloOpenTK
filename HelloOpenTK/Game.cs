@@ -155,20 +155,20 @@ namespace HelloOpenTK
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
-            //GL.EnableVertexAttribArray(0);
+            GL.EnableVertexAttribArray(0);
 
-            shader.SetInt("texture1", 0);
-            shader.SetInt("texture2", 1);
+            shader.SetInt("texture0", 0);
+            shader.SetInt("texture1", 1);
             //纹理映射
 
             //纹理过滤
             float[] borderColor = { 1.0f, 1.0f, 0.0f, 1.0f };
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBorderColor, borderColor);
-            //int texCoordLocation = shader2.GetAttribLocation("aTexCoord");
-           GL.EnableVertexAttribArray(0);
-           GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+            int texCoordLocation = shader.GetAttribLocation("aTexCoord");
+            GL.EnableVertexAttribArray(texCoordLocation);
+            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
             // 连接顶点属性
-            GL.EnableVertexAttribArray(0);
+            GL.EnableVertexAttribArray(texCoordLocation);
 #endif
 
 
@@ -202,8 +202,8 @@ namespace HelloOpenTK
 #endif
 
 #if TEXTURE
-            texture.Use();
-            texture2.Use();
+            texture.Use(TextureUnit.Texture0);
+            //texture2.Use(TextureUnit.Texture1);
             GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
 #endif
             Context.SwapBuffers();
